@@ -266,8 +266,8 @@ ARM Macro Assembler    Page 5
 
   166 000000C2 B504            PUSH             {LR, R2}
   167 000000C4 FB00 F201       MUL              R2, R0, R1
-  168 000000C8         
-  169 000000C8 4C27            LDR              R4, =TABUADA
+  168 000000C8         ;ADD R2, R2, #0
+  169 000000C8 4C33            LDR              R4, =TABUADA
   170 000000CA F7FF FFFE       BL               LCD_PrintString
   171 000000CE         
   172 000000CE F7FF FFFE       BL               print_numero
@@ -275,13 +275,13 @@ ARM Macro Assembler    Page 5
   174 000000D6         
   175 000000D6 F7FF FFFE       BL               print_numero
   176 000000DA         
-  177 000000DA 4C24            LDR              R4,=X
+  177 000000DA 4C30            LDR              R4,=X
   178 000000DC F7FF FFFE       BL               LCD_PrintString
   179 000000E0         
   180 000000E0 4608            MOV              R0, R1
   181 000000E2 F7FF FFFE       BL               print_numero
   182 000000E6         
-  183 000000E6 4C22            LDR              R4,=EQUAL
+  183 000000E6 4C2E            LDR              R4,=EQUAL
   184 000000E8 F7FF FFFE       BL               LCD_PrintString
   185 000000EC         
   186 000000EC 4610            MOV              R0, R2
@@ -293,112 +293,172 @@ ARM Macro Assembler    Page 5
   192 000000F8         ;Input: R0
   193 000000F8         ;Output: -
   194 000000F8         print_numero
-  195 000000F8 B511            PUSH             {LR, R0, R4}
-  196 000000FA 4C1E            LDR              R4,=DIGIT_9_STR
-  197 000000FC 2800            CMP              R0, #0
-  198 000000FE BF08 4C1D       LDREQ            R4, =DIGIT_0_STR
+  195 000000F8 B57F            PUSH             {LR, R0, R1, R2, R3, R4, R5, R6
+} 
+                                                            ; Salva registrador
+                                                            es críticos
+  196 000000FA 4601            MOV              R1, R0      ; R1 recebe o númer
+                                                            o original
+  197 000000FC 466D            MOV              R5, SP      ; R5 será usado com
+                                                            o pilha auxiliar pa
+                                                            ra armazenar os díg
+                                                            itos
+  198 000000FE F04F 060A       MOV              R6, #10     ; Divisor base 10
   199 00000102         
-  200 00000102 2801            CMP              R0, #1
-  201 00000104 BF08 4C1D       LDREQ            R4, =DIGIT_1_STR
-  202 00000108         
-  203 00000108 2802            CMP              R0, #2
-  204 0000010A BF08 4C1C       LDREQ            R4, =DIGIT_2_STR
-  205 0000010E         
-  206 0000010E 2803            CMP              R0, #3
-  207 00000110 BF08 4C1C       LDREQ            R4, =DIGIT_3_STR
-  208 00000114         
-  209 00000114 2804            CMP              R0, #4
-  210 00000116 BF08 4C1B       LDREQ            R4, =DIGIT_4_STR
-  211 0000011A         
-  212 0000011A 2805            CMP              R0, #5
-  213 0000011C BF08 4C1B       LDREQ            R4, =DIGIT_5_STR
-  214 00000120         
-  215 00000120 2806            CMP              R0, #6
-  216 00000122 BF08 4C1A       LDREQ            R4, =DIGIT_6_STR
-  217 00000126         
-  218 00000126 2807            CMP              R0, #7
-  219 00000128 BF08 4C1A       LDREQ            R4, =DIGIT_7_STR
-  220 0000012C         
-  221 0000012C 2808            CMP              R0, #8
-  222 0000012E BF08 4C19       LDREQ            R4, =DIGIT_8_STR
-  223 00000132         
-  224 00000132 2809            CMP              R0, #9
+  200 00000102 2900            CMP              R1, #0      ; Verifica se o núm
+                                                            ero é zero
+  201 00000104 D00A            BEQ              handle_zero ; Tratamento especi
+                                                            al para zero
+  202 00000106         
+  203 00000106         store_digits
+  204 00000106 FB91 F0F6       SDIV             R0, R1, R6  ; R0 = R1 / 10 (par
+                                                            te inteira)
+  205 0000010A FB00 F206       MUL              R2, R0, R6  ; R2 = R0 * 10 (rec
+                                                            alcula a parte inte
+                                                            ira)
+  206 0000010E EBA1 0302       SUB              R3, R1, R2  ; R3 = R1 % 10 (res
+                                                            to da divisão, o dí
+                                                            gito atual)
+  207 00000112         
+  208 00000112 B408            PUSH             {R3}        ; Empilha o dígito 
+                                                            atual
+  209 00000114 4601            MOV              R1, R0      ; Atualiza R1 com a
 
 
 
 ARM Macro Assembler    Page 6 
 
 
-  225 00000134 BF08 4C0F       LDREQ            R4, =DIGIT_9_STR
-  226 00000138         
-  227 00000138 F7FF FFFE       BL               LCD_PrintString
-  228 0000013C         
-  229 0000013C E8BD 4011       POP              {LR, R0, R4}
-  230 00000140         
-  231 00000140         
-  232 00000140         
-  233 00000140 4770            BX               LR
-  234 00000142         
-  235 00000142         ; Definição dos textos do LCD
-  236 00000142 30 00   DIGIT_0_STR
-                               DCB              "0", 0
-  237 00000144 31 00   DIGIT_1_STR
-                               DCB              "1", 0
-  238 00000146 32 00   DIGIT_2_STR
-                               DCB              "2", 0
-  239 00000148 33 00   DIGIT_3_STR
-                               DCB              "3", 0
-  240 0000014A 34 00   DIGIT_4_STR
-                               DCB              "4", 0
-  241 0000014C 35 00   DIGIT_5_STR
-                               DCB              "5", 0
-  242 0000014E 36 00   DIGIT_6_STR
-                               DCB              "6", 0
-  243 00000150 37 00   DIGIT_7_STR
-                               DCB              "7", 0
-  244 00000152 38 00   DIGIT_8_STR
-                               DCB              "8", 0
-  245 00000154 39 00   DIGIT_9_STR
-                               DCB              "9", 0
-  246 00000156 54 61 62 
-              75 61 64 
-              61 20 64 
-              6F 20 00 TABUADA DCB              "Tabuada do ",  0
-  247 00000162 78 00   X       DCB              "x",0
-  248 00000164 3D 00   EQUAL   DCB              "=",0
-  249 00000166         ; ------------------------------------------------------
-                       --------------------------------------------------------
-                       -----------
-  250 00000166         ; Fim do Arquivo
-  251 00000166         ; ------------------------------------------------------
-                       --------------------------------------------------------
-                       ----------- 
-  252 00000166 00 00           ALIGN                        ;Garante que o fim 
-                                                            da seção está alinh
-                                                            ada 
-  253 00000168                 END                          ;Fim do arquivo
-              00000000 
-              00000000 
-              00000000 
-              00000000 
-              00000000 
-              00000000 
-              00000000 
-              00000000 
-              00000000 
-              00000000 
-              00000000 
+                                                             parte inteira
+  210 00000116 2900            CMP              R1, #0      ; Verifica se o núm
+                                                            ero foi reduzido a 
+                                                            0
+  211 00000118 D1F5            BNE              store_digits ; Continua o laço 
+                                                            se ainda há dígitos
+                                                            
+  212 0000011A         
+  213 0000011A E003            B                print_digits ; Vai para a impre
+                                                            ssão dos dígitos
+  214 0000011C         
+  215 0000011C         handle_zero
+  216 0000011C F04F 0300       MOV              R3, #0      ; Coloca 0 em R3
+  217 00000120 B408            PUSH             {R3}        ; Empilha o dígito 
+                                                            0
+  218 00000122 E7FF            B                print_digits ; Vai para a impre
+                                                            ssão dos dígitos
+  219 00000124         
+  220 00000124         print_digits
+  221 00000124 45AD            CMP              SP, R5      ; Verifica se todos
+                                                             os dígitos foram d
+                                                            esempilhados
+  222 00000126 D022            BEQ              print_done  ; Sai se a pilha es
+                                                            tá vazia
+  223 00000128         
+  224 00000128 BC08            POP              {R3}        ; Desempilha o próx
+                                                            imo dígito
+  225 0000012A 4C1E            LDR              R4, =DIGIT_9_STR ; Inicializa c
+                                                            om "9" como padrão
+  226 0000012C 2B00            CMP              R3, #0
+  227 0000012E BF08 4C1D       LDREQ            R4, =DIGIT_0_STR
+  228 00000132 2B01            CMP              R3, #1
+  229 00000134 BF08 4C1D       LDREQ            R4, =DIGIT_1_STR
+  230 00000138 2B02            CMP              R3, #2
+  231 0000013A BF08 4C1C       LDREQ            R4, =DIGIT_2_STR
+  232 0000013E 2B03            CMP              R3, #3
+  233 00000140 BF08 4C1C       LDREQ            R4, =DIGIT_3_STR
+  234 00000144 2B04            CMP              R3, #4
+  235 00000146 BF08 4C1B       LDREQ            R4, =DIGIT_4_STR
+  236 0000014A 2B05            CMP              R3, #5
+  237 0000014C BF08 4C1B       LDREQ            R4, =DIGIT_5_STR
+  238 00000150 2B06            CMP              R3, #6
+  239 00000152 BF08 4C1A       LDREQ            R4, =DIGIT_6_STR
+  240 00000156 2B07            CMP              R3, #7
+  241 00000158 BF08 4C1A       LDREQ            R4, =DIGIT_7_STR
+  242 0000015C 2B08            CMP              R3, #8
+  243 0000015E BF08 4C19       LDREQ            R4, =DIGIT_8_STR
+  244 00000162 2B09            CMP              R3, #9
+  245 00000164 BF08 4C0F       LDREQ            R4, =DIGIT_9_STR
+  246 00000168         
+  247 00000168 F7FF FFFE       BL               LCD_PrintString ; Imprime o díg
+                                                            ito correspondente
+  248 0000016C E7DA            B                print_digits ; Continua o desem
+                                                            pilhamento
+  249 0000016E         
+  250 0000016E         print_done
+  251 0000016E E8BD 407F       POP              {LR, R0, R1, R2, R3, R4, R5, R6
+} 
+                                                            ; Restaura registra
 
 
 
 ARM Macro Assembler    Page 7 
 
 
+                                                            dores
+  252 00000172 4770            BX               LR          ; Retorna
+  253 00000174         
+  254 00000174         
+  255 00000174         
+  256 00000174         ; Definição dos textos do LCD
+  257 00000174 30 00   DIGIT_0_STR
+                               DCB              "0", 0
+  258 00000176 31 00   DIGIT_1_STR
+                               DCB              "1", 0
+  259 00000178 32 00   DIGIT_2_STR
+                               DCB              "2", 0
+  260 0000017A 33 00   DIGIT_3_STR
+                               DCB              "3", 0
+  261 0000017C 34 00   DIGIT_4_STR
+                               DCB              "4", 0
+  262 0000017E 35 00   DIGIT_5_STR
+                               DCB              "5", 0
+  263 00000180 36 00   DIGIT_6_STR
+                               DCB              "6", 0
+  264 00000182 37 00   DIGIT_7_STR
+                               DCB              "7", 0
+  265 00000184 38 00   DIGIT_8_STR
+                               DCB              "8", 0
+  266 00000186 39 00   DIGIT_9_STR
+                               DCB              "9", 0
+  267 00000188 54 61 62 
+              75 61 64 
+              61 20 64 
+              6F 20 00 TABUADA DCB              "Tabuada do ",  0
+  268 00000194 78 00   X       DCB              "x",0
+  269 00000196 3D 00   EQUAL   DCB              "=",0
+  270 00000198         ; ------------------------------------------------------
+                       --------------------------------------------------------
+                       -----------
+  271 00000198         ; Fim do Arquivo
+  272 00000198         ; ------------------------------------------------------
+                       --------------------------------------------------------
+                       ----------- 
+  273 00000198                 ALIGN                        ;Garante que o fim 
+                                                            da seção está alinh
+                                                            ada 
+  274 00000198                 END                          ;Fim do arquivo
+              00000000 
+              00000000 
+              00000000 
+              00000000 
+              00000000 
+              00000000 
+              00000000 
+              00000000 
+              00000000 
+              00000000 
+              00000000 
               00000000 
               00000000 
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
 interwork --depend=.\objects\lcd.d -o.\objects\lcd.o -IC:\Users\victo\AppData\L
+
+
+
+ARM Macro Assembler    Page 8 
+
+
 ocal\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C129 --predefine="__EVAL S
 ETA 1" --predefine="__UVISION_VERSION SETA 536" --predefine="TM4C1294NCPDT SETA
  1" --list=.\listings\lcd.lst lcd.s
@@ -431,55 +491,55 @@ Symbol: .text
    Uses
       None
 Comment: .text unused
-DIGIT_0_STR 00000142
+DIGIT_0_STR 00000174
 
 Symbol: DIGIT_0_STR
    Definitions
-      At line 236 in file lcd.s
+      At line 257 in file lcd.s
    Uses
-      At line 198 in file lcd.s
+      At line 227 in file lcd.s
 Comment: DIGIT_0_STR used once
-DIGIT_1_STR 00000144
+DIGIT_1_STR 00000176
 
 Symbol: DIGIT_1_STR
    Definitions
-      At line 237 in file lcd.s
+      At line 258 in file lcd.s
    Uses
-      At line 201 in file lcd.s
+      At line 229 in file lcd.s
 Comment: DIGIT_1_STR used once
-DIGIT_2_STR 00000146
+DIGIT_2_STR 00000178
 
 Symbol: DIGIT_2_STR
    Definitions
-      At line 238 in file lcd.s
+      At line 259 in file lcd.s
    Uses
-      At line 204 in file lcd.s
+      At line 231 in file lcd.s
 Comment: DIGIT_2_STR used once
-DIGIT_3_STR 00000148
+DIGIT_3_STR 0000017A
 
 Symbol: DIGIT_3_STR
    Definitions
-      At line 239 in file lcd.s
+      At line 260 in file lcd.s
    Uses
-      At line 207 in file lcd.s
+      At line 233 in file lcd.s
 Comment: DIGIT_3_STR used once
-DIGIT_4_STR 0000014A
+DIGIT_4_STR 0000017C
 
 Symbol: DIGIT_4_STR
    Definitions
-      At line 240 in file lcd.s
+      At line 261 in file lcd.s
    Uses
-      At line 210 in file lcd.s
+      At line 235 in file lcd.s
 Comment: DIGIT_4_STR used once
-DIGIT_5_STR 0000014C
+DIGIT_5_STR 0000017E
 
 Symbol: DIGIT_5_STR
    Definitions
-      At line 241 in file lcd.s
+      At line 262 in file lcd.s
    Uses
-      At line 213 in file lcd.s
+      At line 237 in file lcd.s
 Comment: DIGIT_5_STR used once
-DIGIT_6_STR 0000014E
+DIGIT_6_STR 00000180
 
 Symbol: DIGIT_6_STR
 
@@ -489,40 +549,40 @@ ARM Macro Assembler    Page 2 Alphabetic symbol ordering
 Relocatable symbols
 
    Definitions
-      At line 242 in file lcd.s
+      At line 263 in file lcd.s
    Uses
-      At line 216 in file lcd.s
+      At line 239 in file lcd.s
 Comment: DIGIT_6_STR used once
-DIGIT_7_STR 00000150
+DIGIT_7_STR 00000182
 
 Symbol: DIGIT_7_STR
    Definitions
-      At line 243 in file lcd.s
+      At line 264 in file lcd.s
    Uses
-      At line 219 in file lcd.s
+      At line 241 in file lcd.s
 Comment: DIGIT_7_STR used once
-DIGIT_8_STR 00000152
+DIGIT_8_STR 00000184
 
 Symbol: DIGIT_8_STR
    Definitions
-      At line 244 in file lcd.s
+      At line 265 in file lcd.s
    Uses
-      At line 222 in file lcd.s
+      At line 243 in file lcd.s
 Comment: DIGIT_8_STR used once
-DIGIT_9_STR 00000154
+DIGIT_9_STR 00000186
 
 Symbol: DIGIT_9_STR
    Definitions
-      At line 245 in file lcd.s
+      At line 266 in file lcd.s
    Uses
-      At line 196 in file lcd.s
       At line 225 in file lcd.s
+      At line 245 in file lcd.s
 
-EQUAL 00000164
+EQUAL 00000196
 
 Symbol: EQUAL
    Definitions
-      At line 248 in file lcd.s
+      At line 269 in file lcd.s
    Uses
       At line 183 in file lcd.s
 Comment: EQUAL used once
@@ -596,7 +656,7 @@ Symbol: LCD_PrintString
       At line 170 in file lcd.s
       At line 178 in file lcd.s
       At line 184 in file lcd.s
-      At line 227 in file lcd.s
+      At line 247 in file lcd.s
 
 LCD_Reset 000000AA
 
@@ -606,11 +666,11 @@ Symbol: LCD_Reset
    Uses
       At line 32 in file lcd.s
 Comment: LCD_Reset used once
-TABUADA 00000156
+TABUADA 00000188
 
 Symbol: TABUADA
    Definitions
-      At line 246 in file lcd.s
+      At line 267 in file lcd.s
    Uses
 
 
@@ -620,14 +680,40 @@ Relocatable symbols
 
       At line 169 in file lcd.s
 Comment: TABUADA used once
-X 00000162
+X 00000194
 
 Symbol: X
    Definitions
-      At line 247 in file lcd.s
+      At line 268 in file lcd.s
    Uses
       At line 177 in file lcd.s
 Comment: X used once
+handle_zero 0000011C
+
+Symbol: handle_zero
+   Definitions
+      At line 215 in file lcd.s
+   Uses
+      At line 201 in file lcd.s
+Comment: handle_zero used once
+print_digits 00000124
+
+Symbol: print_digits
+   Definitions
+      At line 220 in file lcd.s
+   Uses
+      At line 213 in file lcd.s
+      At line 218 in file lcd.s
+      At line 248 in file lcd.s
+
+print_done 0000016E
+
+Symbol: print_done
+   Definitions
+      At line 250 in file lcd.s
+   Uses
+      At line 222 in file lcd.s
+Comment: print_done used once
 print_numero 000000F8
 
 Symbol: print_numero
@@ -648,7 +734,21 @@ Symbol: print_tabuada
    Uses
       At line 33 in file lcd.s
 Comment: print_tabuada used once
-24 symbols
+store_digits 00000106
+
+Symbol: store_digits
+
+
+
+ARM Macro Assembler    Page 5 Alphabetic symbol ordering
+Relocatable symbols
+
+   Definitions
+      At line 203 in file lcd.s
+   Uses
+      At line 211 in file lcd.s
+Comment: store_digits used once
+28 symbols
 
 
 
@@ -688,4 +788,4 @@ Symbol: SysTick_Wait1ms
       At line 157 in file lcd.s
 
 3 symbols
-364 symbols in table
+368 symbols in table

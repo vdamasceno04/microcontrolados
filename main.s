@@ -311,43 +311,45 @@ OpenFunction
 ; Parâmetro de entrada: Não tem
 ; Parâmetro de saída: Não tem
 GetPassword
+	BL zerar_memoria
 	BL LCD_Reset				; Limpa o display e coloca o cursor em home		
-	MOV R0, #3			; Informa que o cofre está aberto na primeira linha do LCD
+	MOV R0, #2			; Informa que o cofre está aberto na primeira linha do LCD
+	
 	BL update_tabuada
 	BL print_tabuada
 	MOV R0, #500				; Mostra a mensagem durante 5s
 	BL SysTick_Wait1ms	; Informa que o cofre está aberto na primeira linha do LCD
 	
 	BL LCD_Reset				; Limpa o display e coloca o cursor em home		
-	MOV R0, #3			; Informa que o cofre está aberto na primeira linha do LCD
+	MOV R0, #2			; Informa que o cofre está aberto na primeira linha do LCD
 	BL update_tabuada
 	BL print_tabuada
 	MOV R0, #500				; Mostra a mensagem durante 5s
 	BL SysTick_Wait1ms	; Informa que o cofre está aberto na primeira linha do LCD
 	
 	BL LCD_Reset				; Limpa o display e coloca o cursor em home		
-	MOV R0, #3			; Informa que o cofre está aberto na primeira linha do LCD
+	MOV R0, #2		; Informa que o cofre está aberto na primeira linha do LCD
 	BL update_tabuada
 	BL print_tabuada
 	MOV R0, #500				; Mostra a mensagem durante 5s
 	BL SysTick_Wait1ms	; Informa que o cofre está aberto na primeira linha do LCD
 	
 	BL LCD_Reset				; Limpa o display e coloca o cursor em home		
-	MOV R0, #3			; Informa que o cofre está aberto na primeira linha do LCD
+	MOV R0, #2			; Informa que o cofre está aberto na primeira linha do LCD
 	BL update_tabuada
 	BL print_tabuada
 	MOV R0, #500				; Mostra a mensagem durante 5s
 	BL SysTick_Wait1ms	; Informa que o cofre está aberto na primeira linha do LCD
 
 	BL LCD_Reset				; Limpa o display e coloca o cursor em home		
-	MOV R0, #3			; Informa que o cofre está aberto na primeira linha do LCD
+	MOV R0, #2			; Informa que o cofre está aberto na primeira linha do LCD
 	BL update_tabuada
 	BL print_tabuada
 	MOV R0, #500				; Mostra a mensagem durante 5s
 	BL SysTick_Wait1ms	; Informa que o cofre está aberto na primeira linha do LCD
 	
 	BL LCD_Reset				; Limpa o display e coloca o cursor em home		
-	MOV R0, #3			; Informa que o cofre está aberto na primeira linha do LCD
+	MOV R0, #2			; Informa que o cofre está aberto na primeira linha do LCD
 	BL update_tabuada
 	BL print_tabuada
 	MOV R0, #500				; Mostra a mensagem durante 5s
@@ -464,6 +466,20 @@ ChangedMasterPassword
 	POP {LR}
 	BX LR
 
+zerar_memoria
+    LDR R0, =0x20000A00      ; Endereço inicial
+    LDR R1, =0x20000B00      ; Endereço final
+    MOV R2, #9               ; Valor a ser escrito (zero)
+
+zerar_loop
+    CMP R0, R1                ; Verifica se R0 atingiu o endereço final
+    BGE zerar_fim             ; Se R0 >= R1, sai do loop
+    STR R2, [R0], #4          ; Armazena zero no endereço atual e incrementa R0 em 4 bytes
+    B zerar_loop              ; Repete o loop
+
+zerar_fim
+    BX LR                     ; Retorna da função
+	
 
 ; Definição dos textos do LCD com 16 caracteres cada
 OPENING_STR	DCB "Abrindo         ", 0

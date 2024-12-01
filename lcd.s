@@ -165,7 +165,7 @@ LCD_Reset
 print_tabuada
 	PUSH {LR, R2}
 	MUL R2, R0, R1
-	
+	;ADD R2, R2, #0
 	LDR R4, =TABUADA
 	BL LCD_PrintString
 	
@@ -192,45 +192,64 @@ print_tabuada
 ;Input: R0
 ;Output: -
 print_numero
-	PUSH {LR, R0, R4}
-	LDR R4,=DIGIT_9_STR
-	CMP R0, #0
-	LDREQ R4, =DIGIT_0_STR
+    PUSH {LR, R0, R1, R2, R3, R4, R5, R6} ; Salva registradores críticos
+    MOV R1, R0                 ; R1 recebe o número original
+    MOV R5, SP                 ; R5 será usado como pilha auxiliar para armazenar os dígitos
+    MOV R6, #10                ; Divisor base 10
 
-	CMP R0, #1
-	LDREQ R4, =DIGIT_1_STR
-	
-	CMP R0, #2
-	LDREQ R4, =DIGIT_2_STR
-	
-	CMP R0, #3
-	LDREQ R4, =DIGIT_3_STR
-	
-	CMP R0, #4
-	LDREQ R4, =DIGIT_4_STR
-	
-	CMP R0, #5
-	LDREQ R4, =DIGIT_5_STR
-	
-	CMP R0, #6
-	LDREQ R4, =DIGIT_6_STR
-	
-	CMP R0, #7
-	LDREQ R4, =DIGIT_7_STR
-	
-	CMP R0, #8
-	LDREQ R4, =DIGIT_8_STR
-	
-	CMP R0, #9
-	LDREQ R4, =DIGIT_9_STR
-	
-	BL LCD_PrintString
-	
-	POP {LR, R0, R4}
+    CMP R1, #0                 ; Verifica se o número é zero
+    BEQ handle_zero            ; Tratamento especial para zero
 
+store_digits
+    SDIV R0, R1, R6            ; R0 = R1 / 10 (parte inteira)
+    MUL R2, R0, R6             ; R2 = R0 * 10 (recalcula a parte inteira)
+    SUB R3, R1, R2             ; R3 = R1 % 10 (resto da divisão, o dígito atual)
 
-	
-	BX LR
+    PUSH {R3}                  ; Empilha o dígito atual
+    MOV R1, R0                 ; Atualiza R1 com a parte inteira
+    CMP R1, #0                 ; Verifica se o número foi reduzido a 0
+    BNE store_digits           ; Continua o laço se ainda há dígitos
+
+    B print_digits             ; Vai para a impressão dos dígitos
+
+handle_zero
+    MOV R3, #0                 ; Coloca 0 em R3
+    PUSH {R3}                  ; Empilha o dígito 0
+    B print_digits             ; Vai para a impressão dos dígitos
+
+print_digits
+    CMP SP, R5                 ; Verifica se todos os dígitos foram desempilhados
+    BEQ print_done             ; Sai se a pilha está vazia
+
+    POP {R3}                   ; Desempilha o próximo dígito
+    LDR R4, =DIGIT_9_STR       ; Inicializa com "9" como padrão
+    CMP R3, #0
+    LDREQ R4, =DIGIT_0_STR
+    CMP R3, #1
+    LDREQ R4, =DIGIT_1_STR
+    CMP R3, #2
+    LDREQ R4, =DIGIT_2_STR
+    CMP R3, #3
+    LDREQ R4, =DIGIT_3_STR
+    CMP R3, #4
+    LDREQ R4, =DIGIT_4_STR
+    CMP R3, #5
+    LDREQ R4, =DIGIT_5_STR
+    CMP R3, #6
+    LDREQ R4, =DIGIT_6_STR
+    CMP R3, #7
+    LDREQ R4, =DIGIT_7_STR
+    CMP R3, #8
+    LDREQ R4, =DIGIT_8_STR
+    CMP R3, #9
+    LDREQ R4, =DIGIT_9_STR
+
+    BL LCD_PrintString         ; Imprime o dígito correspondente
+    B print_digits             ; Continua o desempilhamento
+
+print_done
+    POP {LR, R0, R1, R2, R3, R4, R5, R6} ; Restaura registradores
+    BX LR                      ; Retorna
 
 ; Definição dos textos do LCD
 DIGIT_0_STR	DCB "0", 0

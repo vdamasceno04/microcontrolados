@@ -163,7 +163,7 @@ ARM Macro Assembler    Page 3
    83 00000018 F04F 0700       MOV              R7, #0      ; R7 usado para con
                                                             tar quantos dígitos
                                                              o usuário digitou
-   84 0000001C F8DF 83B4       LDR              R8, =PASSWORDS ; R8 usado para 
+   84 0000001C F8DF 83CC       LDR              R8, =PASSWORDS ; R8 usado para 
                                                             apontar a posição d
                                                             a senha salva na me
                                                             mória
@@ -241,14 +241,14 @@ ARM Macro Assembler    Page 4
   126 0000006C 2D01            CMP              R5, #SET_PASSWORD ; Configura a
                                                              senha que o usuári
                                                             o digitou
-  127 0000006E F000 80F7       BEQ.W            SetPassword ; Branch offset out
+  127 0000006E F000 80F9       BEQ.W            SetPassword ; Branch offset out
                                                              of range (BEQ.W co
                                                             rrige o problema)
   128 00000072         
   129 00000072 2D04            CMP              R5, #CLOSING ; Coloca o cofre e
                                                             m processo de fecha
                                                             mento
-  130 00000074 F000 8107       BEQ.W            ClosingFunction ; Branch offset
+  130 00000074 F000 8109       BEQ.W            ClosingFunction ; Branch offset
                                                              out of range (BEQ.
                                                             W corrige o problem
                                                             a)
@@ -271,7 +271,7 @@ ARM Macro Assembler    Page 5
                                                             o começo da segunda
                                                              linha
   140 0000007E         
-  141 0000007E 4CD6            LDR              R4, =EMPTY_STR ; Imprime uma st
+  141 0000007E 4CDC            LDR              R4, =EMPTY_STR ; Imprime uma st
                                                             ring vazia na segun
                                                             da linha
   142 00000080 F7FF FFFE       BL               LCD_PrintString
@@ -352,7 +352,7 @@ ARM Macro Assembler    Page 6
                                                              coloca o cursor em
                                                              home
   174 000000BC         
-  175 000000BC 4CC7            LDR              R4, =WRONG_PASSWORD_STR ; Impri
+  175 000000BC 4CCD            LDR              R4, =WRONG_PASSWORD_STR ; Impri
                                                             me mensagem de senh
                                                             a incorreta no disp
                                                             lay
@@ -423,7 +423,7 @@ ARM Macro Assembler    Page 7
                                                              coloca o cursor em
                                                              home
   203 000000F8         
-  204 000000F8 4CB9            LDR              R4, =LOCKED_MASTER_STR ; Mostra
+  204 000000F8 4CBF            LDR              R4, =LOCKED_MASTER_STR ; Mostra
                                                              a mensagem de erro
                                                              senha mestra
   205 000000FA F7FF FFFE       BL               LCD_PrintString
@@ -593,7 +593,7 @@ ARM Macro Assembler    Page 10
                                                              coloca o cursor em
                                                              home
   298 000001AC         
-  299 000001AC 4C8D            LDR              R4, =OPENING_STR ; Imprime a me
+  299 000001AC 4C93            LDR              R4, =OPENING_STR ; Imprime a me
                                                             nsagem abrindo cofr
                                                             e
   300 000001AE         ; Esse erro parou de aparecer, então comentei a linha
@@ -614,436 +614,458 @@ ARM Macro Assembler    Page 10
   311 000001BC         ; Parâmetro de entrada: Não tem
   312 000001BC         ; Parâmetro de saída: Não tem
   313 000001BC         GetPassword
-  314 000001BC F7FF FFFE       BL               LCD_Reset   ; Limpa o display e
+  314 000001BC F000 F8AD       BL               zerar_memoria
+  315 000001C0 F7FF FFFE       BL               LCD_Reset   ; Limpa o display e
                                                              coloca o cursor em
                                                              home  
-  315 000001C0 F04F 0003       MOV              R0, #3      ; Informa que o cof
+  316 000001C4 F04F 0002       MOV              R0, #2      ; Informa que o cof
                                                             re está aberto na p
                                                             rimeira linha do LC
                                                             D
-  316 000001C4 F7FF FFFE       BL               update_tabuada
-  317 000001C8 F7FF FFFE       BL               print_tabuada
-  318 000001CC F44F 70FA       MOV              R0, #500    ; Mostra a mensagem
+  317 000001C8         
+  318 000001C8 F7FF FFFE       BL               update_tabuada
+  319 000001CC F7FF FFFE       BL               print_tabuada
+  320 000001D0 F44F 70FA       MOV              R0, #500    ; Mostra a mensagem
                                                              durante 5s
-  319 000001D0 F7FF FFFE       BL               SysTick_Wait1ms ; Informa que o
+  321 000001D4 F7FF FFFE       BL               SysTick_Wait1ms ; Informa que o
                                                              cofre está aberto 
                                                             na primeira linha d
                                                             o LCD
-  320 000001D4         
-  321 000001D4 F7FF FFFE       BL               LCD_Reset   ; Limpa o display e
+  322 000001D8         
+  323 000001D8 F7FF FFFE       BL               LCD_Reset   ; Limpa o display e
                                                              coloca o cursor em
                                                              home  
-  322 000001D8 F04F 0003       MOV              R0, #3      ; Informa que o cof
+  324 000001DC F04F 0002       MOV              R0, #2      ; Informa que o cof
                                                             re está aberto na p
                                                             rimeira linha do LC
                                                             D
-  323 000001DC F7FF FFFE       BL               update_tabuada
-  324 000001E0 F7FF FFFE       BL               print_tabuada
-  325 000001E4 F44F 70FA       MOV              R0, #500    ; Mostra a mensagem
+  325 000001E0 F7FF FFFE       BL               update_tabuada
+  326 000001E4 F7FF FFFE       BL               print_tabuada
+  327 000001E8 F44F 70FA       MOV              R0, #500    ; Mostra a mensagem
                                                              durante 5s
-  326 000001E8 F7FF FFFE       BL               SysTick_Wait1ms ; Informa que o
+  328 000001EC F7FF FFFE       BL               SysTick_Wait1ms ; Informa que o
                                                              cofre está aberto 
                                                             na primeira linha d
                                                             o LCD
-  327 000001EC         
-  328 000001EC F7FF FFFE       BL               LCD_Reset   ; Limpa o display e
-                                                             coloca o cursor em
+  329 000001F0         
 
 
 
 ARM Macro Assembler    Page 11 
 
 
+  330 000001F0 F7FF FFFE       BL               LCD_Reset   ; Limpa o display e
+                                                             coloca o cursor em
                                                              home  
-  329 000001F0 F04F 0003       MOV              R0, #3      ; Informa que o cof
+  331 000001F4 F04F 0002       MOV              R0, #2      ; Informa que o cof
                                                             re está aberto na p
                                                             rimeira linha do LC
                                                             D
-  330 000001F4 F7FF FFFE       BL               update_tabuada
-  331 000001F8 F7FF FFFE       BL               print_tabuada
-  332 000001FC F44F 70FA       MOV              R0, #500    ; Mostra a mensagem
+  332 000001F8 F7FF FFFE       BL               update_tabuada
+  333 000001FC F7FF FFFE       BL               print_tabuada
+  334 00000200 F44F 70FA       MOV              R0, #500    ; Mostra a mensagem
                                                              durante 5s
-  333 00000200 F7FF FFFE       BL               SysTick_Wait1ms ; Informa que o
+  335 00000204 F7FF FFFE       BL               SysTick_Wait1ms ; Informa que o
                                                              cofre está aberto 
                                                             na primeira linha d
                                                             o LCD
-  334 00000204         
-  335 00000204 F7FF FFFE       BL               LCD_Reset   ; Limpa o display e
+  336 00000208         
+  337 00000208 F7FF FFFE       BL               LCD_Reset   ; Limpa o display e
                                                              coloca o cursor em
                                                              home  
-  336 00000208 F04F 0003       MOV              R0, #3      ; Informa que o cof
+  338 0000020C F04F 0002       MOV              R0, #2      ; Informa que o cof
                                                             re está aberto na p
                                                             rimeira linha do LC
                                                             D
-  337 0000020C F7FF FFFE       BL               update_tabuada
-  338 00000210 F7FF FFFE       BL               print_tabuada
-  339 00000214 F44F 70FA       MOV              R0, #500    ; Mostra a mensagem
+  339 00000210 F7FF FFFE       BL               update_tabuada
+  340 00000214 F7FF FFFE       BL               print_tabuada
+  341 00000218 F44F 70FA       MOV              R0, #500    ; Mostra a mensagem
                                                              durante 5s
-  340 00000218 F7FF FFFE       BL               SysTick_Wait1ms ; Informa que o
+  342 0000021C F7FF FFFE       BL               SysTick_Wait1ms ; Informa que o
                                                              cofre está aberto 
                                                             na primeira linha d
                                                             o LCD
-  341 0000021C         
-  342 0000021C F7FF FFFE       BL               LCD_Reset   ; Limpa o display e
+  343 00000220         
+  344 00000220 F7FF FFFE       BL               LCD_Reset   ; Limpa o display e
                                                              coloca o cursor em
                                                              home  
-  343 00000220 F04F 0003       MOV              R0, #3      ; Informa que o cof
+  345 00000224 F04F 0002       MOV              R0, #2      ; Informa que o cof
                                                             re está aberto na p
                                                             rimeira linha do LC
                                                             D
-  344 00000224 F7FF FFFE       BL               update_tabuada
-  345 00000228 F7FF FFFE       BL               print_tabuada
-  346 0000022C F44F 70FA       MOV              R0, #500    ; Mostra a mensagem
+  346 00000228 F7FF FFFE       BL               update_tabuada
+  347 0000022C F7FF FFFE       BL               print_tabuada
+  348 00000230 F44F 70FA       MOV              R0, #500    ; Mostra a mensagem
                                                              durante 5s
-  347 00000230 F7FF FFFE       BL               SysTick_Wait1ms ; Informa que o
+  349 00000234 F7FF FFFE       BL               SysTick_Wait1ms ; Informa que o
                                                              cofre está aberto 
                                                             na primeira linha d
                                                             o LCD
-  348 00000234         
-  349 00000234 F7FF FFFE       BL               LCD_Reset   ; Limpa o display e
+  350 00000238         
+  351 00000238 F7FF FFFE       BL               LCD_Reset   ; Limpa o display e
                                                              coloca o cursor em
                                                              home  
-  350 00000238 F04F 0003       MOV              R0, #3      ; Informa que o cof
+  352 0000023C F04F 0002       MOV              R0, #2      ; Informa que o cof
                                                             re está aberto na p
                                                             rimeira linha do LC
                                                             D
-  351 0000023C F7FF FFFE       BL               update_tabuada
-  352 00000240 F7FF FFFE       BL               print_tabuada
-  353 00000244 F44F 70FA       MOV              R0, #500    ; Mostra a mensagem
+  353 00000240 F7FF FFFE       BL               update_tabuada
+  354 00000244 F7FF FFFE       BL               print_tabuada
+  355 00000248 F44F 70FA       MOV              R0, #500    ; Mostra a mensagem
                                                              durante 5s
-  354 00000248 F7FF FFFE       BL               SysTick_Wait1ms ; Informa que o
-                                                             cofre está aberto 
 
 
 
 ARM Macro Assembler    Page 12 
 
 
+  356 0000024C F7FF FFFE       BL               SysTick_Wait1ms ; Informa que o
+                                                             cofre está aberto 
                                                             na primeira linha d
                                                             o LCD
-  355 0000024C         
-  356 0000024C F7FF FFFE       BL               LCD_Line2
-  357 00000250 4C61            LDR              R4, =EMPTY_STR ; Limpa a segund
+  357 00000250         
+  358 00000250 F7FF FFFE       BL               LCD_Line2
+  359 00000254 4C66            LDR              R4, =EMPTY_STR ; Limpa a segund
                                                             a linha do LCD
-  358 00000252 F7FF FFFE       BL               LCD_PrintString
-  359 00000256         
-  360 00000256 F7FF FFFE       BL               LCD_Line2   ; Coloca o cursor n
+  360 00000256 F7FF FFFE       BL               LCD_PrintString
+  361 0000025A         
+  362 0000025A F7FF FFFE       BL               LCD_Line2   ; Coloca o cursor n
                                                             o começo da segunda
                                                              linha
-  361 0000025A         
-  362 0000025A F04F 0501       MOV              R5, #SET_PASSWORD ; Coloca o co
+  363 0000025E         
+  364 0000025E F04F 0501       MOV              R5, #SET_PASSWORD ; Coloca o co
                                                             fre em estado de ca
                                                             dastrar a nova senh
                                                             a
-  363 0000025E         
-  364 0000025E E7FE            B                MainLoop    ; Retoma o loop pri
+  365 00000262         
+  366 00000262 E7FE            B                MainLoop    ; Retoma o loop pri
                                                             ncipal no estado de
                                                              cadastrar a nova s
                                                             enha
-  365 00000260         
-  366 00000260         ; Função SetPassword
-  367 00000260         ; Mostra a mensagem de confirmação de senha usando # e a
+  367 00000264         
+  368 00000264         ; Função SetPassword
+  369 00000264         ; Mostra a mensagem de confirmação de senha usando # e a
                        guarda # ser inserida para avançar para o estado de fech
                        ando cofre
-  368 00000260         ; Parâmetro de entrada: Não tem
-  369 00000260         ; Parâmetro de saída: Não tem
-  370 00000260         SetPassword
-  371 00000260 F7FF FFFE       BL               MapMatrixKeyboard ; Lê o dígito
+  370 00000264         ; Parâmetro de entrada: Não tem
+  371 00000264         ; Parâmetro de saída: Não tem
+  372 00000264         SetPassword
+  373 00000264 F7FF FFFE       BL               MapMatrixKeyboard ; Lê o dígito
                                                              pressionado no tec
                                                             lado e guarda em R6
                                                             
-  372 00000264         
-  373 00000264 F1BC 0F64       CMP              R12, #WAIT_HASH_CONFIRM ; Flag 
+  374 00000268         
+  375 00000268 F1BC 0F64       CMP              R12, #WAIT_HASH_CONFIRM ; Flag 
                                                             de 4 dígitos inseri
                                                             dos e aguardando a 
                                                             confirmação com #
-  374 00000268 D00A            BEQ              CheckHashConfirmation
-  375 0000026A         
-  376 0000026A F808 6007       STRB             R6, [R8, R7] ; Guarda o dígito 
+  376 0000026C D00A            BEQ              CheckHashConfirmation
+  377 0000026E         
+  378 0000026E F808 6007       STRB             R6, [R8, R7] ; Guarda o dígito 
                                                             inserido na memória
                                                              sequencialmente
-  377 0000026E         
-  378 0000026E 2F04            CMP              R7, #4      ; Verifica se 4 díg
+  379 00000272         
+  380 00000272 2F04            CMP              R7, #4      ; Verifica se 4 díg
                                                             itos foram inserido
                                                             s
-  379 00000270 DBF6            BLT              SetPassword ; Se não, retoma o 
+  381 00000274 DBF6            BLT              SetPassword ; Se não, retoma o 
                                                             loop para receber o
                                                              próximo
-  380 00000272         
-  381 00000272 F7FF FFFE       BL               LCD_Reset   ; Se sim, limpa o d
+  382 00000276         
+  383 00000276 F7FF FFFE       BL               LCD_Reset   ; Se sim, limpa o d
                                                             isplay e coloca o c
                                                             ursor em home
-  382 00000276         
-  383 00000276 4C5C            LDR              R4, =HASH_CONFIRM_STR ; Imprime
+  384 0000027A         
+  385 0000027A 4C61            LDR              R4, =HASH_CONFIRM_STR ; Imprime
                                                              a mensagem de conf
-                                                            irmação da senha us
-                                                            ando #
 
 
 
 ARM Macro Assembler    Page 13 
 
 
-  384 00000278 F7FF FFFE       BL               LCD_PrintString
-  385 0000027C         
-  386 0000027C F04F 0C64       MOV              R12, #WAIT_HASH_CONFIRM ; Flag 
+                                                            irmação da senha us
+                                                            ando #
+  386 0000027C F7FF FFFE       BL               LCD_PrintString
+  387 00000280         
+  388 00000280 F04F 0C64       MOV              R12, #WAIT_HASH_CONFIRM ; Flag 
                                                             de 4 dígitos inseri
                                                             dos e aguardando a 
                                                             confirmação com #
-  387 00000280         CheckHashConfirmation
-  388 00000280 2D04            CMP              R5, #CLOSING ; Verifica se o es
+  389 00000284         CheckHashConfirmation
+  390 00000284 2D04            CMP              R5, #CLOSING ; Verifica se o es
                                                             tado do cofre é fec
                                                             hando (DIGIT_HASH n
                                                             o matrix_keyboard.s
                                                              altera R5 para CLO
                                                             SING)
-  389 00000282 D1ED            BNE              SetPassword ; Se ainda não for,
+  391 00000286 D1ED            BNE              SetPassword ; Se ainda não for,
                                                              volta para configu
                                                             rar a senha
-  390 00000284 E7FE            B                MainLoop    ; Retoma o loop pri
+  392 00000288 E7FE            B                MainLoop    ; Retoma o loop pri
                                                             ncipal
-  391 00000286         
-  392 00000286         ; Função ClosingFunction
-  393 00000286         ; Mostra a mensagem que o cofre está fechando, fecha o c
+  393 0000028A         
+  394 0000028A         ; Função ClosingFunction
+  395 0000028A         ; Mostra a mensagem que o cofre está fechando, fecha o c
                        ofre e mostra que está fechado
-  394 00000286         ; Parâmetro de entrada: Não tem
-  395 00000286         ; Parâmetro de saída: Não tem
-  396 00000286         ClosingFunction
-  397 00000286 F44F 707A       MOV              R0, #1000   ; Aguarda 1s antes 
+  396 0000028A         ; Parâmetro de entrada: Não tem
+  397 0000028A         ; Parâmetro de saída: Não tem
+  398 0000028A         ClosingFunction
+  399 0000028A F44F 707A       MOV              R0, #1000   ; Aguarda 1s antes 
                                                             de iniciar o proces
                                                             so de fechamento do
                                                              cofre
-  398 0000028A F7FF FFFE       BL               SysTick_Wait1ms
-  399 0000028E         
-  400 0000028E F7FF FFFE       BL               LCD_Reset   ; Limpa o display e
+  400 0000028E F7FF FFFE       BL               SysTick_Wait1ms
+  401 00000292         
+  402 00000292 F7FF FFFE       BL               LCD_Reset   ; Limpa o display e
                                                              coloca o cursor em
                                                              home
-  401 00000292         
-  402 00000292 4C56            LDR              R4, =CLOSING_STR ; Imprime a me
+  403 00000296         
+  404 00000296 4C5B            LDR              R4, =CLOSING_STR ; Imprime a me
                                                             nsagem de fechando 
                                                             cofre
-  403 00000294 F7FF FFFE       BL               LCD_PrintString
-  404 00000298         
-  405 00000298 F241 3088       MOV              R0, #5000   ; Mostra a mensagem
+  405 00000298 F7FF FFFE       BL               LCD_PrintString
+  406 0000029C         
+  407 0000029C F241 3088       MOV              R0, #5000   ; Mostra a mensagem
                                                              durante 5s
-  406 0000029C F7FF FFFE       BL               SysTick_Wait1ms
-  407 000002A0         
-  408 000002A0 F7FF FFFE       BL               LCD_Reset   ; Limpa o display e
+  408 000002A0 F7FF FFFE       BL               SysTick_Wait1ms
+  409 000002A4         
+  410 000002A4 F7FF FFFE       BL               LCD_Reset   ; Limpa o display e
                                                              coloca o cursor em
                                                              home
-  409 000002A4         
-  410 000002A4 4C52            LDR              R4, =CLOSED_STR ; Imprime a men
+  411 000002A8         
+  412 000002A8 4C57            LDR              R4, =CLOSED_STR ; Imprime a men
                                                             sagem de cofre fech
                                                             ado na primeira lin
                                                             ha do LCD
-  411 000002A6 F7FF FFFE       BL               LCD_PrintString
-  412 000002AA         
-  413 000002AA F7FF FFFE       BL               LCD_Line2   ; Coloca o cursor n
+  413 000002AA F7FF FFFE       BL               LCD_PrintString
+  414 000002AE         
+  415 000002AE F7FF FFFE       BL               LCD_Line2   ; Coloca o cursor n
                                                             o começo da segunda
                                                              linha
-  414 000002AE 4C51            LDR              R4, =ENTER_PASSWORD_STR ; Pede 
-                                                            para o usuário inse
 
 
 
 ARM Macro Assembler    Page 14 
 
 
+  416 000002B2 4C56            LDR              R4, =ENTER_PASSWORD_STR ; Pede 
+                                                            para o usuário inse
                                                             rir a senha na segu
                                                             nda linha do LCD
-  415 000002B0 F7FF FFFE       BL               LCD_PrintString
-  416 000002B4         
-  417 000002B4 F44F 707A       MOV              R0, #1000   ; Aguarda 1s antes 
+  417 000002B4 F7FF FFFE       BL               LCD_PrintString
+  418 000002B8         
+  419 000002B8 F44F 707A       MOV              R0, #1000   ; Aguarda 1s antes 
                                                             de mudar o estado d
                                                             o cofre para tranca
                                                             do
-  418 000002B8 F7FF FFFE       BL               SysTick_Wait1ms
-  419 000002BC         
-  420 000002BC F04F 0505       MOV              R5, #CLOSED ; Coloca o cofre em
-                                                             estado de fechado
+  420 000002BC F7FF FFFE       BL               SysTick_Wait1ms
   421 000002C0         
-  422 000002C0 E7FE            B                MainLoop    ; Retoma o loop pri
+  422 000002C0 F04F 0505       MOV              R5, #CLOSED ; Coloca o cofre em
+                                                             estado de fechado
+  423 000002C4         
+  424 000002C4 E7FE            B                MainLoop    ; Retoma o loop pri
                                                             ncipal
-  423 000002C2         
-  424 000002C2         
-  425 000002C2         ;SETAR SENHA MESTRE 
-  426 000002C2         GetMasterPassword
-  427 000002C2 B500            PUSH             {LR}
-  428 000002C4 F7FF FFFE       BL               LCD_Reset
-  429 000002C8         
-  430 000002C8 4C4B            LDR              R4,=ENTER_MASTER_PASSWORD_STR ;
+  425 000002C6         
+  426 000002C6         
+  427 000002C6         ;SETAR SENHA MESTRE 
+  428 000002C6         GetMasterPassword
+  429 000002C6 B500            PUSH             {LR}
+  430 000002C8 F7FF FFFE       BL               LCD_Reset
+  431 000002CC         
+  432 000002CC 4C50            LDR              R4,=ENTER_MASTER_PASSWORD_STR ;
                                                              muda a string que 
                                                             vai pro display
-  431 000002CA         
-  432 000002CA F7FF FFFE       BL               LCD_PrintString ;imprime nova s
-                                                            tring
   433 000002CE         
-  434 000002CE F44F 60FA       MOV              R0, #2000   ; seta o tempo de 2
-                                                            s
+  434 000002CE F7FF FFFE       BL               LCD_PrintString ;imprime nova s
+                                                            tring
   435 000002D2         
-  436 000002D2 F7FF FFFE       BL               SysTick_Wait1ms
+  436 000002D2 F44F 60FA       MOV              R0, #2000   ; seta o tempo de 2
+                                                            s
   437 000002D6         
-  438 000002D6 F7FF FFFE       BL               LCD_Line2
+  438 000002D6 F7FF FFFE       BL               SysTick_Wait1ms
   439 000002DA         
-  440 000002DA F04F 0704       MOV              R7, #4
-  441 000002DE E7FF            B                SetNewMasterPassword
-  442 000002E0         
-  443 000002E0         SetNewMasterPassword
-  444 000002E0         
-  445 000002E0 F7FF FFFE       BL               MapMatrixKeyboard
+  440 000002DA F7FF FFFE       BL               LCD_Line2
+  441 000002DE         
+  442 000002DE F04F 0704       MOV              R7, #4
+  443 000002E2 E7FF            B                SetNewMasterPassword
+  444 000002E4         
+  445 000002E4         SetNewMasterPassword
   446 000002E4         
-  447 000002E4 F5B6 7F80       CMP              R6, #INVALID_DIGIT
-  448 000002E8 BF18            IT               NE
-  449 000002EA F808 6007       STRBNE           R6, [R8, R7] ; guarda a senha
-  450 000002EE F44F 7680       MOV              R6, #INVALID_DIGIT ; Depois de 
+  447 000002E4 F7FF FFFE       BL               MapMatrixKeyboard
+  448 000002E8         
+  449 000002E8 F5B6 7F80       CMP              R6, #INVALID_DIGIT
+  450 000002EC BF18            IT               NE
+  451 000002EE F808 6007       STRBNE           R6, [R8, R7] ; guarda a senha
+  452 000002F2 F44F 7680       MOV              R6, #INVALID_DIGIT ; Depois de 
                                                             contabilizado, inva
                                                             lida R6 para evitar
                                                              erros
-  451 000002F2         
-  452 000002F2 2F08            CMP              R7, #8      ; Verifica se 4 dig
+  453 000002F6         
+  454 000002F6 2F08            CMP              R7, #8      ; Verifica se 4 dig
                                                             itos foram inserido
                                                             s
-  453 000002F4 DBF4            BLT              SetNewMasterPassword ; Se não, 
+  455 000002F8 DBF4            BLT              SetNewMasterPassword ; Se não, 
                                                             volta para o inicio
                                                              
-  454 000002F6 D8FE            BHI              GetMasterPassword
-  455 000002F8 D0FF            BEQ              ChangedMasterPassword
 
 
 
 ARM Macro Assembler    Page 15 
 
 
-  456 000002FA         
-  457 000002FA         ChangedMasterPassword
-  458 000002FA F04F 0700       MOV              R7, #0
-  459 000002FE F7FF FFFE       BL               LCD_Reset
-  460 00000302 4C3E            LDR              R4,=CHANGED_MASTER_PASSWORD_STR
+  456 000002FA D8FE            BHI              GetMasterPassword
+  457 000002FC D0FF            BEQ              ChangedMasterPassword
+  458 000002FE         
+  459 000002FE         ChangedMasterPassword
+  460 000002FE F04F 0700       MOV              R7, #0
+  461 00000302 F7FF FFFE       BL               LCD_Reset
+  462 00000306 4C43            LDR              R4,=CHANGED_MASTER_PASSWORD_STR
  
                                                             ; muda a string que
                                                              vai pro display
-  461 00000304 F7FF FFFE       BL               LCD_PrintString ;imprime nova s
+  463 00000308 F7FF FFFE       BL               LCD_PrintString ;imprime nova s
                                                             tring
-  462 00000308 F44F 60FA       MOV              R0, #2000   ; seta o tempo de 2
+  464 0000030C F44F 60FA       MOV              R0, #2000   ; seta o tempo de 2
                                                             s
-  463 0000030C F7FF FFFE       BL               SysTick_Wait1ms
-  464 00000310 F85D EB04       POP              {LR}
-  465 00000314 4770            BX               LR
-  466 00000316         
-  467 00000316         
-  468 00000316         ; Definição dos textos do LCD com 16 caracteres cada
-  469 00000316 41 62 72 
+  465 00000310 F7FF FFFE       BL               SysTick_Wait1ms
+  466 00000314 F85D EB04       POP              {LR}
+  467 00000318 4770            BX               LR
+  468 0000031A         
+  469 0000031A         zerar_memoria
+  470 0000031A 4840            LDR              R0, =0x20000A00 
+                                                            ; Endereço inicial
+  471 0000031C 4940            LDR              R1, =0x20000B00 
+                                                            ; Endereço final
+  472 0000031E F04F 0209       MOV              R2, #9      ; Valor a ser escri
+                                                            to (zero)
+  473 00000322         
+  474 00000322         zerar_loop
+  475 00000322 4288            CMP              R0, R1      ; Verifica se R0 at
+                                                            ingiu o endereço fi
+                                                            nal
+  476 00000324 DA02            BGE              zerar_fim   ; Se R0 >= R1, sai 
+                                                            do loop
+  477 00000326 F840 2B04       STR              R2, [R0], #4 ; Armazena zero no
+                                                             endereço atual e i
+                                                            ncrementa R0 em 4 b
+                                                            ytes
+  478 0000032A E7FA            B                zerar_loop  ; Repete o loop
+  479 0000032C         
+  480 0000032C         zerar_fim
+  481 0000032C 4770            BX               LR          ; Retorna da função
+                                                            
+  482 0000032E         
+  483 0000032E         
+  484 0000032E         ; Definição dos textos do LCD com 16 caracteres cada
+  485 0000032E 41 62 72 
               69 6E 64 
               6F 20 20 
               20 20 20 
               20 20 20 
               20 00    OPENING_STR
                                DCB              "Abrindo         ", 0
-  470 00000327 77 00   OPEN_STR
+  486 0000033F 77 00   OPEN_STR
                                DCB              "w",  0
-  471 00000329 46 65 63 
+  487 00000341 46 65 63 
               68 61 6E 
               64 6F 20 
               20 20 20 
               20 20 20 
               20 00    CLOSING_STR
-                               DCB              "Fechando        ", 0
-  472 0000033A 43 6F 66 
-              72 65 20 
-              66 65 63 
-              68 61 64 
-              6F 20 20 
-              20 00    CLOSED_STR
-                               DCB              "Cofre fechado   ", 0
-  473 0000034B         
-  474 0000034B 45 52 52 
-              20 53 65 
-              6E 68 61 
-              20 6D 65 
-              73 74 72 
-              61 00    LOCKED_MASTER_STR
-                               DCB              "ERR Senha mestra", 0
-  475 0000035C         
-  476 0000035C 43 6F 6E 
-              66 69 72 
-              6D 65 20 
-              63 6F 6D 
-              20 23 20 
-              20 00    HASH_CONFIRM_STR
-                               DCB              "Confirme com #  ", 0
-  477 0000036D 44 69 67 
-              69 74 65 
 
 
 
 ARM Macro Assembler    Page 16 
 
 
+                               DCB              "Fechando        ", 0
+  488 00000352 43 6F 66 
+              72 65 20 
+              66 65 63 
+              68 61 64 
+              6F 20 20 
+              20 00    CLOSED_STR
+                               DCB              "Cofre fechado   ", 0
+  489 00000363         
+  490 00000363 45 52 52 
+              20 53 65 
+              6E 68 61 
+              20 6D 65 
+              73 74 72 
+              61 00    LOCKED_MASTER_STR
+                               DCB              "ERR Senha mestra", 0
+  491 00000374         
+  492 00000374 43 6F 6E 
+              66 69 72 
+              6D 65 20 
+              63 6F 6D 
+              20 23 20 
+              20 00    HASH_CONFIRM_STR
+                               DCB              "Confirme com #  ", 0
+  493 00000385 44 69 67 
+              69 74 65 
               20 6E 6F 
               76 61 20 
               73 65 6E 
               68 00    GET_PASSWORD_STR
                                DCB              "Digite nova senh", 0
-  478 0000037E         
-  479 0000037E 44 69 67 
+  494 00000396         
+  495 00000396 44 69 67 
               69 74 65 
               20 61 20 
               73 65 6E 
               68 61 20 
               00       ENTER_PASSWORD_STR
                                DCB              "Digite a senha ", 0
-  480 0000038E 4E 6F 76 
+  496 000003A6 4E 6F 76 
               61 20 73 
               65 6E 68 
               61 20 6D 
               65 73 74 
               72 00    ENTER_MASTER_PASSWORD_STR
                                DCB              "Nova senha mestr", 0
-  481 0000039F 53 65 6E 
+  497 000003B7 53 65 6E 
               68 61 20 
               6D 65 73 
               74 72 65 
               20 61 6C 
               74 00    CHANGED_MASTER_PASSWORD_STR
                                DCB              "Senha mestre alt", 0
-  482 000003B0         
-  483 000003B0 20 20 20 
+  498 000003C8         
+  499 000003C8 20 20 20 
               20 20 20 
               20 20 20 
               20 20 20 
               20 20 20 
-              20 00    EMPTY_STR
-                               DCB              "                ", 0
-  484 000003C1         
-  485 000003C1 45 52 52 
-              20 53 65 
-              6E 68 61 
-              20 65 72 
-              72 61 64 
-              61 00    WRONG_PASSWORD_STR
-                               DCB              "ERR Senha errada", 0
-  486 000003D2         
-  487 000003D2         ; ------------------------------------------------------
-                       --------------------------------------------------------
-                       -----------
-  488 000003D2         ; Fim do Arquivo
-  489 000003D2         ; ------------------------------------------------------
-                       --------------------------------------------------------
-                       ----------- 
-  490 000003D2 00 00           ALIGN                        ; Garante que o fim
-                                                             da seção está alin
-                                                            hada 
-  491 000003D4                 END                          ; Fim do arquivo
-              00000000 
-              00000000 
-              00000000 
-              00000000 
 
 
 
 ARM Macro Assembler    Page 17 
 
 
+              20 00    EMPTY_STR
+                               DCB              "                ", 0
+  500 000003D9         
+  501 000003D9 45 52 52 
+              20 53 65 
+              6E 68 61 
+              20 65 72 
+              72 61 64 
+              61 00    WRONG_PASSWORD_STR
+                               DCB              "ERR Senha errada", 0
+  502 000003EA         
+  503 000003EA         ; ------------------------------------------------------
+                       --------------------------------------------------------
+                       -----------
+  504 000003EA         ; Fim do Arquivo
+  505 000003EA         ; ------------------------------------------------------
+                       --------------------------------------------------------
+                       ----------- 
+  506 000003EA 00 00           ALIGN                        ; Garante que o fim
+                                                             da seção está alin
+                                                            hada 
+  507 000003EC                 END                          ; Fim do arquivo
               00000000 
               00000000 
               00000000 
@@ -1052,6 +1074,12 @@ ARM Macro Assembler    Page 17
               00000000 
               00000000 
               00000000 
+              00000000 
+              00000000 
+              00000000 
+              00000000 
+              20000A00 
+              20000B00 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
 interwork --depend=.\objects\main.d -o.\objects\main.o -IC:\Users\victo\AppData
 \Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C129 --predefine="__EVAL
@@ -1094,45 +1122,45 @@ Symbol: .text
    Uses
       None
 Comment: .text unused
-CHANGED_MASTER_PASSWORD_STR 0000039F
+CHANGED_MASTER_PASSWORD_STR 000003B7
 
 Symbol: CHANGED_MASTER_PASSWORD_STR
    Definitions
-      At line 481 in file main.s
+      At line 497 in file main.s
    Uses
-      At line 460 in file main.s
+      At line 462 in file main.s
 Comment: CHANGED_MASTER_PASSWORD_STR used once
-CLOSED_STR 0000033A
+CLOSED_STR 00000352
 
 Symbol: CLOSED_STR
    Definitions
-      At line 472 in file main.s
+      At line 488 in file main.s
    Uses
-      At line 410 in file main.s
+      At line 412 in file main.s
 Comment: CLOSED_STR used once
-CLOSING_STR 00000329
+CLOSING_STR 00000341
 
 Symbol: CLOSING_STR
    Definitions
-      At line 471 in file main.s
+      At line 487 in file main.s
    Uses
-      At line 402 in file main.s
+      At line 404 in file main.s
 Comment: CLOSING_STR used once
-ChangedMasterPassword 000002FA
+ChangedMasterPassword 000002FE
 
 Symbol: ChangedMasterPassword
    Definitions
-      At line 457 in file main.s
+      At line 459 in file main.s
    Uses
-      At line 455 in file main.s
+      At line 457 in file main.s
 Comment: ChangedMasterPassword used once
-CheckHashConfirmation 00000280
+CheckHashConfirmation 00000284
 
 Symbol: CheckHashConfirmation
    Definitions
-      At line 387 in file main.s
+      At line 389 in file main.s
    Uses
-      At line 374 in file main.s
+      At line 376 in file main.s
 Comment: CheckHashConfirmation used once
 CheckMasterPassword 0000010A
 
@@ -1165,48 +1193,48 @@ Symbol: ClosedFunction
       At line 121 in file main.s
       At line 189 in file main.s
 
-ClosingFunction 00000286
+ClosingFunction 0000028A
 
 Symbol: ClosingFunction
    Definitions
-      At line 396 in file main.s
+      At line 398 in file main.s
    Uses
       At line 130 in file main.s
 Comment: ClosingFunction used once
-EMPTY_STR 000003B0
+EMPTY_STR 000003C8
 
 Symbol: EMPTY_STR
    Definitions
-      At line 483 in file main.s
+      At line 499 in file main.s
    Uses
       At line 141 in file main.s
-      At line 357 in file main.s
+      At line 359 in file main.s
 
-ENTER_MASTER_PASSWORD_STR 0000038E
+ENTER_MASTER_PASSWORD_STR 000003A6
 
 Symbol: ENTER_MASTER_PASSWORD_STR
    Definitions
-      At line 480 in file main.s
+      At line 496 in file main.s
    Uses
-      At line 430 in file main.s
+      At line 432 in file main.s
 Comment: ENTER_MASTER_PASSWORD_STR used once
-ENTER_PASSWORD_STR 0000037E
+ENTER_PASSWORD_STR 00000396
 
 Symbol: ENTER_PASSWORD_STR
    Definitions
-      At line 479 in file main.s
+      At line 495 in file main.s
    Uses
-      At line 414 in file main.s
+      At line 416 in file main.s
 Comment: ENTER_PASSWORD_STR used once
-GET_PASSWORD_STR 0000036D
+GET_PASSWORD_STR 00000385
 
 Symbol: GET_PASSWORD_STR
    Definitions
-      At line 477 in file main.s
+      At line 493 in file main.s
    Uses
       None
 Comment: GET_PASSWORD_STR unused
-GetMasterPassword 000002C2
+GetMasterPassword 000002C6
 
 Symbol: GetMasterPassword
    Definitions
@@ -1216,10 +1244,10 @@ Symbol: GetMasterPassword
 ARM Macro Assembler    Page 3 Alphabetic symbol ordering
 Relocatable symbols
 
-      At line 426 in file main.s
+      At line 428 in file main.s
    Uses
       At line 44 in file main.s
-      At line 454 in file main.s
+      At line 456 in file main.s
 
 GetPassword 000001BC
 
@@ -1229,19 +1257,19 @@ Symbol: GetPassword
    Uses
       At line 124 in file main.s
 Comment: GetPassword used once
-HASH_CONFIRM_STR 0000035C
+HASH_CONFIRM_STR 00000374
 
 Symbol: HASH_CONFIRM_STR
    Definitions
-      At line 476 in file main.s
+      At line 492 in file main.s
    Uses
-      At line 383 in file main.s
+      At line 385 in file main.s
 Comment: HASH_CONFIRM_STR used once
-LOCKED_MASTER_STR 0000034B
+LOCKED_MASTER_STR 00000363
 
 Symbol: LOCKED_MASTER_STR
    Definitions
-      At line 474 in file main.s
+      At line 490 in file main.s
    Uses
       At line 204 in file main.s
 Comment: LOCKED_MASTER_STR used once
@@ -1264,9 +1292,9 @@ Symbol: MainLoop
       At line 92 in file main.s
       At line 132 in file main.s
       At line 307 in file main.s
-      At line 364 in file main.s
-      At line 390 in file main.s
-      At line 422 in file main.s
+      At line 366 in file main.s
+      At line 392 in file main.s
+      At line 424 in file main.s
 
 MasterPasswordError 000000F4
 
@@ -1282,19 +1310,19 @@ ARM Macro Assembler    Page 4 Alphabetic symbol ordering
 Relocatable symbols
 
 Comment: MasterPasswordError unused
-OPENING_STR 00000316
+OPENING_STR 0000032E
 
 Symbol: OPENING_STR
    Definitions
-      At line 469 in file main.s
+      At line 485 in file main.s
    Uses
       At line 299 in file main.s
 Comment: OPENING_STR used once
-OPEN_STR 00000327
+OPEN_STR 0000033F
 
 Symbol: OPEN_STR
    Definitions
-      At line 470 in file main.s
+      At line 486 in file main.s
    Uses
       None
 Comment: OPEN_STR unused
@@ -1315,24 +1343,24 @@ Symbol: SetMasterPassword
    Uses
       At line 90 in file main.s
 Comment: SetMasterPassword used once
-SetNewMasterPassword 000002E0
+SetNewMasterPassword 000002E4
 
 Symbol: SetNewMasterPassword
    Definitions
-      At line 443 in file main.s
+      At line 445 in file main.s
    Uses
-      At line 441 in file main.s
-      At line 453 in file main.s
+      At line 443 in file main.s
+      At line 455 in file main.s
 
-SetPassword 00000260
+SetPassword 00000264
 
 Symbol: SetPassword
    Definitions
-      At line 370 in file main.s
+      At line 372 in file main.s
    Uses
       At line 127 in file main.s
-      At line 379 in file main.s
-      At line 389 in file main.s
+      At line 381 in file main.s
+      At line 391 in file main.s
 
 Start 00000000
 
@@ -1372,11 +1400,11 @@ Symbol: UnlockFunction
    Uses
       At line 222 in file main.s
 Comment: UnlockFunction used once
-WRONG_PASSWORD_STR 000003C1
+WRONG_PASSWORD_STR 000003D9
 
 Symbol: WRONG_PASSWORD_STR
    Definitions
-      At line 485 in file main.s
+      At line 501 in file main.s
    Uses
       At line 175 in file main.s
 Comment: WRONG_PASSWORD_STR used once
@@ -1396,7 +1424,37 @@ Symbol: WrongPassword
    Uses
       At line 164 in file main.s
 Comment: WrongPassword used once
-34 symbols
+zerar_fim 0000032C
+
+Symbol: zerar_fim
+   Definitions
+      At line 480 in file main.s
+   Uses
+      At line 476 in file main.s
+Comment: zerar_fim used once
+zerar_loop 00000322
+
+
+
+ARM Macro Assembler    Page 6 Alphabetic symbol ordering
+Relocatable symbols
+
+
+Symbol: zerar_loop
+   Definitions
+      At line 474 in file main.s
+   Uses
+      At line 478 in file main.s
+Comment: zerar_loop used once
+zerar_memoria 0000031A
+
+Symbol: zerar_memoria
+   Definitions
+      At line 469 in file main.s
+   Uses
+      At line 314 in file main.s
+Comment: zerar_memoria used once
+37 symbols
 
 
 
@@ -1410,7 +1468,7 @@ Symbol: CLOSED
       At line 18 in file main.s
    Uses
       At line 120 in file main.s
-      At line 420 in file main.s
+      At line 422 in file main.s
 
 CLOSING 00000004
 
@@ -1419,7 +1477,7 @@ Symbol: CLOSING
       At line 17 in file main.s
    Uses
       At line 129 in file main.s
-      At line 388 in file main.s
+      At line 390 in file main.s
 
 GET_PASSWORD 00000000
 
@@ -1443,8 +1501,8 @@ Symbol: INVALID_DIGIT
       At line 197 in file main.s
       At line 218 in file main.s
       At line 291 in file main.s
-      At line 447 in file main.s
-      At line 450 in file main.s
+      At line 449 in file main.s
+      At line 452 in file main.s
 
 INVALID_PW_CHAR FFFFFFFF
 
@@ -1511,7 +1569,7 @@ Symbol: SET_PASSWORD
       At line 14 in file main.s
    Uses
       At line 126 in file main.s
-      At line 362 in file main.s
+      At line 364 in file main.s
 
 WAIT_HASH_CONFIRM 00000064
 
@@ -1519,8 +1577,8 @@ Symbol: WAIT_HASH_CONFIRM
    Definitions
       At line 27 in file main.s
    Uses
-      At line 373 in file main.s
-      At line 386 in file main.s
+      At line 375 in file main.s
+      At line 388 in file main.s
 
 12 symbols
 
@@ -1554,10 +1612,10 @@ Symbol: LCD_Line2
       At line 139 in file main.s
       At line 144 in file main.s
       At line 210 in file main.s
-      At line 356 in file main.s
-      At line 360 in file main.s
-      At line 413 in file main.s
-      At line 438 in file main.s
+      At line 358 in file main.s
+      At line 362 in file main.s
+      At line 415 in file main.s
+      At line 440 in file main.s
 
 LCD_PrintString 00000000
 
@@ -1569,13 +1627,13 @@ Symbol: LCD_PrintString
       At line 176 in file main.s
       At line 205 in file main.s
       At line 302 in file main.s
-      At line 358 in file main.s
-      At line 384 in file main.s
-      At line 403 in file main.s
-      At line 411 in file main.s
-      At line 415 in file main.s
-      At line 432 in file main.s
-      At line 461 in file main.s
+      At line 360 in file main.s
+      At line 386 in file main.s
+      At line 405 in file main.s
+      At line 413 in file main.s
+      At line 417 in file main.s
+      At line 434 in file main.s
+      At line 463 in file main.s
 
 LCD_Reset 00000000
 
@@ -1586,23 +1644,23 @@ Symbol: LCD_Reset
       At line 173 in file main.s
       At line 202 in file main.s
       At line 297 in file main.s
-      At line 314 in file main.s
-      At line 321 in file main.s
+      At line 315 in file main.s
+      At line 323 in file main.s
 
 
 
 ARM Macro Assembler    Page 2 Alphabetic symbol ordering
 External symbols
 
-      At line 328 in file main.s
-      At line 335 in file main.s
-      At line 342 in file main.s
-      At line 349 in file main.s
-      At line 381 in file main.s
-      At line 400 in file main.s
-      At line 408 in file main.s
-      At line 428 in file main.s
-      At line 459 in file main.s
+      At line 330 in file main.s
+      At line 337 in file main.s
+      At line 344 in file main.s
+      At line 351 in file main.s
+      At line 383 in file main.s
+      At line 402 in file main.s
+      At line 410 in file main.s
+      At line 430 in file main.s
+      At line 461 in file main.s
 
 MapMatrixKeyboard 00000000
 
@@ -1612,8 +1670,8 @@ Symbol: MapMatrixKeyboard
    Uses
       At line 150 in file main.s
       At line 212 in file main.s
-      At line 371 in file main.s
-      At line 445 in file main.s
+      At line 373 in file main.s
+      At line 447 in file main.s
 
 PLL_Init 00000000
 
@@ -1676,17 +1734,17 @@ Symbol: SysTick_Wait1ms
       At line 255 in file main.s
       At line 271 in file main.s
       At line 305 in file main.s
-      At line 319 in file main.s
-      At line 326 in file main.s
-      At line 333 in file main.s
-      At line 340 in file main.s
-      At line 347 in file main.s
-      At line 354 in file main.s
-      At line 398 in file main.s
-      At line 406 in file main.s
-      At line 418 in file main.s
-      At line 436 in file main.s
-      At line 463 in file main.s
+      At line 321 in file main.s
+      At line 328 in file main.s
+      At line 335 in file main.s
+      At line 342 in file main.s
+      At line 349 in file main.s
+      At line 356 in file main.s
+      At line 400 in file main.s
+      At line 408 in file main.s
+      At line 420 in file main.s
+      At line 438 in file main.s
+      At line 465 in file main.s
 
 print_tabuada 00000000
 
@@ -1694,12 +1752,12 @@ Symbol: print_tabuada
    Definitions
       At line 68 in file main.s
    Uses
-      At line 317 in file main.s
-      At line 324 in file main.s
-      At line 331 in file main.s
-      At line 338 in file main.s
-      At line 345 in file main.s
-      At line 352 in file main.s
+      At line 319 in file main.s
+      At line 326 in file main.s
+      At line 333 in file main.s
+      At line 340 in file main.s
+      At line 347 in file main.s
+      At line 354 in file main.s
 
 update_tabuada 00000000
 
@@ -1707,12 +1765,12 @@ Symbol: update_tabuada
    Definitions
       At line 69 in file main.s
    Uses
-      At line 316 in file main.s
-      At line 323 in file main.s
-      At line 330 in file main.s
-      At line 337 in file main.s
-      At line 344 in file main.s
-      At line 351 in file main.s
+      At line 318 in file main.s
+      At line 325 in file main.s
+      At line 332 in file main.s
+      At line 339 in file main.s
+      At line 346 in file main.s
+      At line 353 in file main.s
 
 14 symbols
-398 symbols in table
+401 symbols in table
