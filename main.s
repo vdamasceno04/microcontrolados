@@ -50,6 +50,8 @@ PASSWORDS SPACE 8			; 4 bytes para a senha do usuário e 4 bytes para a senha mes
 		; Se chamar alguma função externa	
         ;IMPORT <func>              ; Permite chamar dentro deste arquivo uma 
 									; função <func>
+								
+		EXPORT zerar_memoria
 		IMPORT PLL_Init
 		IMPORT SysTick_Init
 		IMPORT SysTick_Wait1ms			
@@ -312,55 +314,21 @@ OpenFunction
 ; Parâmetro de saída: Não tem
 GetPassword
 	BL zerar_memoria
-	BL LCD_Reset				; Limpa o display e coloca o cursor em home		
-	MOV R0, #2			; Informa que o cofre está aberto na primeira linha do LCD
 	
+	BL LCD_Reset				; Limpa o display e coloca o cursor em home	
+	MOV R0, #2			; simula clique no 2
 	BL update_tabuada
 	BL print_tabuada
 	MOV R0, #500				; Mostra a mensagem durante 5s
 	BL SysTick_Wait1ms	; Informa que o cofre está aberto na primeira linha do LCD
 	
 	BL LCD_Reset				; Limpa o display e coloca o cursor em home		
-	MOV R0, #2			; Informa que o cofre está aberto na primeira linha do LCD
+	MOV R0, #2			; simula clique no 2
 	BL update_tabuada
 	BL print_tabuada
 	MOV R0, #500				; Mostra a mensagem durante 5s
 	BL SysTick_Wait1ms	; Informa que o cofre está aberto na primeira linha do LCD
-	
-	BL LCD_Reset				; Limpa o display e coloca o cursor em home		
-	MOV R0, #2		; Informa que o cofre está aberto na primeira linha do LCD
-	BL update_tabuada
-	BL print_tabuada
-	MOV R0, #500				; Mostra a mensagem durante 5s
-	BL SysTick_Wait1ms	; Informa que o cofre está aberto na primeira linha do LCD
-	
-	BL LCD_Reset				; Limpa o display e coloca o cursor em home		
-	MOV R0, #2			; Informa que o cofre está aberto na primeira linha do LCD
-	BL update_tabuada
-	BL print_tabuada
-	MOV R0, #500				; Mostra a mensagem durante 5s
-	BL SysTick_Wait1ms	; Informa que o cofre está aberto na primeira linha do LCD
-
-	BL LCD_Reset				; Limpa o display e coloca o cursor em home		
-	MOV R0, #2			; Informa que o cofre está aberto na primeira linha do LCD
-	BL update_tabuada
-	BL print_tabuada
-	MOV R0, #500				; Mostra a mensagem durante 5s
-	BL SysTick_Wait1ms	; Informa que o cofre está aberto na primeira linha do LCD
-	
-	BL LCD_Reset				; Limpa o display e coloca o cursor em home		
-	MOV R0, #2			; Informa que o cofre está aberto na primeira linha do LCD
-	BL update_tabuada
-	BL print_tabuada
-	MOV R0, #500				; Mostra a mensagem durante 5s
-	BL SysTick_Wait1ms	; Informa que o cofre está aberto na primeira linha do LCD
-
-	BL LCD_Line2
-	LDR R4, =EMPTY_STR			; Limpa a segunda linha do LCD
-	BL LCD_PrintString
-	
-	BL LCD_Line2				; Coloca o cursor no começo da segunda linha
-	
+		
 	MOV R5, #SET_PASSWORD		; Coloca o cofre em estado de cadastrar a nova senha
 	
 	B MainLoop					; Retoma o loop principal no estado de cadastrar a nova senha

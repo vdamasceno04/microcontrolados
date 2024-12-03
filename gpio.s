@@ -138,6 +138,7 @@ GPIO_PORTJ_RIS_R            EQU    0x40060414
 		EXPORT GPIOPortJ_Handler	; Permite chamar GPIOPortJ_Handler de outro arquivo
 
 		; Se chamar alguma função externa
+		IMPORT zerar_memoria
 		IMPORT EnableInterrupts		; Chama EnableInterrupts do arquivo "startup.s"
 
 ;--------------------------------------------------------------------------------
@@ -392,9 +393,7 @@ PortJ_Input
 ; Par?metro de entrada: N?o tem
 ; Par?metro de sa?da: R0 --> o valor a ser atualizado
 GPIOPortJ_Handler
-	PUSH {R0, R1}
-	
-	PUSH {LR}
+	PUSH {R0, R1, LR}
 	LDR R1, =GPIO_PORTJ_RIS_R
 	LDR R0, [R1]
 	
@@ -405,11 +404,13 @@ GPIOPortJ_Handler
 	MOV R0, #2_00000001						; PJ0 E PJ1
 	STR R0, [R1] 							; Limpa a interrup??o (ACK)
 	
-	POP {R0, R1}
-	POP{LR}
+	POP {R0, R1, LR}
 	BX LR 									; Retorna
 	 
 SW1_pressed ; Deve limpar a memoria de multiplicadores
+	PUSH {LR}
+	BL zerar_memoria
+	POP {LR}
 	BX LR
 	
 
