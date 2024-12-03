@@ -434,11 +434,11 @@ PortK_Output
 ; Parâmetro de entrada: Não tem
 ; Parâmetro de saída: R0 --> o valor da leitura
 PortL_Input
-	PUSH {R0, R1, R2}
+	PUSH {R1}
 	LDR	R1, =GPIO_PORTL_DATA_R		    	; Carrega o valor do offset do data register
 	LDR R0, [R1]                            ; Lê no barramento de dados dos pinos
 	
-	POP {R0 ,R1, R2}
+	POP {R1}
 	BX LR									; Retorna
 
 ; Função PortM_Output

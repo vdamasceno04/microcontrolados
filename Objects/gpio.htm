@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\gpio.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\gpio.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Tue Dec 03 00:56:42 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Tue Dec 03 02:30:41 2024
 <BR><P>
 <H3>Maximum Stack Usage =          0 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -17,14 +17,14 @@ Functions with no stack information
  <LI><a href="#[7a]">PortA_Output</a>
  <LI><a href="#[83]">PortJ_Input</a>
  <LI><a href="#[3d]">GPIOPortJ_Handler</a>
- <LI><a href="#[80]">PortK_Output</a>
- <LI><a href="#[82]">PortL_Input</a>
- <LI><a href="#[7f]">PortM_Output</a>
+ <LI><a href="#[7e]">PortK_Output</a>
+ <LI><a href="#[81]">PortL_Input</a>
+ <LI><a href="#[7d]">PortM_Output</a>
  <LI><a href="#[79]">PortP_Output</a>
  <LI><a href="#[7b]">PortQ_Output</a>
  <LI><a href="#[6c]">Start</a>
  <LI><a href="#[73]">MainLoop</a>
- <LI><a href="#[7e]">GetMasterPassword</a>
+ <LI><a href="#[7c]">GetMasterPassword</a>
  <LI><a href="#[6f]">zerar_memoria</a>
  <LI><a href="#[84]">DisableInterrupts</a>
  <LI><a href="#[6e]">EnableInterrupts</a>
@@ -38,10 +38,10 @@ Functions with no stack information
  <LI><a href="#[74]">LCD_Line2</a>
  <LI><a href="#[75]">LCD_PrintString</a>
  <LI><a href="#[77]">LCD_Reset</a>
- <LI><a href="#[7d]">print_tabuada</a>
- <LI><a href="#[81]">print_numero</a>
+ <LI><a href="#[7f]">print_tabuada</a>
+ <LI><a href="#[80]">print_numero</a>
  <LI><a href="#[76]">MapMatrixKeyboard</a>
- <LI><a href="#[7c]">update_tabuada</a>
+ <LI><a href="#[82]">update_tabuada</a>
 </UL>
 </UL>
 <P>
@@ -551,15 +551,15 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup.o(RESET)
 </UL>
-<P><STRONG><a name="[80]"></a>PortK_Output</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, gpio.o(.text))
+<P><STRONG><a name="[7e]"></a>PortK_Output</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, gpio.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
 </UL>
 
-<P><STRONG><a name="[82]"></a>PortL_Input</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, gpio.o(.text))
+<P><STRONG><a name="[81]"></a>PortL_Input</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, gpio.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MapMatrixKeyboard
 </UL>
 
-<P><STRONG><a name="[7f]"></a>PortM_Output</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, gpio.o(.text))
+<P><STRONG><a name="[7d]"></a>PortM_Output</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, gpio.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MapMatrixKeyboard
 <LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
 </UL>
@@ -583,9 +583,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[73]"></a>MainLoop</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, main.o(.text))
-<BR><BR>[Calls]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;update_tabuada
-<LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print_tabuada
-<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Wait1ms
+<BR><BR>[Calls]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Wait1ms
 <LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MapMatrixKeyboard
 <LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Reset
 <LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_PrintString
@@ -600,15 +598,15 @@ Global Symbols
 <LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Start
 </UL>
 
-<P><STRONG><a name="[7e]"></a>GetMasterPassword</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, main.o(.text), UNUSED)
+<P><STRONG><a name="[7c]"></a>GetMasterPassword</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, main.o(.text), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Wait1ms
 <LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MapMatrixKeyboard
 <LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Reset
 <LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_PrintString
 <LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Line2
-<LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetMasterPassword
+<LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetMasterPassword
 </UL>
-<BR>[Called By]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetMasterPassword
+<BR>[Called By]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetMasterPassword
 </UL>
 
 <P><STRONG><a name="[6f]"></a>zerar_memoria</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, main.o(.text))
@@ -642,14 +640,14 @@ Global Symbols
 <LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_PrintString
 <LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Line2
 <LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
-<LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetMasterPassword
+<LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetMasterPassword
 <LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MainLoop
 </UL>
 
 <P><STRONG><a name="[72]"></a>LCD_Init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, lcd.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Wait1ms
-<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PortM_Output
-<LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PortK_Output
+<LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PortM_Output
+<LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PortK_Output
 </UL>
 <BR>[Called By]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Start
 </UL>
@@ -657,54 +655,58 @@ Global Symbols
 <P><STRONG><a name="[74]"></a>LCD_Line2</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, lcd.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Wait1ms
 </UL>
-<BR>[Called By]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print_tabuada
-<LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetMasterPassword
+<BR>[Called By]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print_tabuada
+<LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetMasterPassword
 <LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MainLoop
 </UL>
 
 <P><STRONG><a name="[75]"></a>LCD_PrintString</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, lcd.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Wait1ms
 </UL>
-<BR>[Called By]<UL><LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print_numero
-<LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print_tabuada
+<BR>[Called By]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print_numero
+<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print_tabuada
 <LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MapMatrixKeyboard
-<LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetMasterPassword
+<LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetMasterPassword
 <LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MainLoop
 </UL>
 
 <P><STRONG><a name="[77]"></a>LCD_Reset</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, lcd.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Wait1ms
 </UL>
-<BR>[Called By]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetMasterPassword
+<BR>[Called By]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print_tabuada
+<LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetMasterPassword
 <LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MainLoop
 </UL>
 
-<P><STRONG><a name="[7d]"></a>print_tabuada</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, lcd.o(.text))
-<BR><BR>[Calls]<UL><LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print_numero
+<P><STRONG><a name="[7f]"></a>print_tabuada</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, lcd.o(.text))
+<BR><BR>[Calls]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print_numero
+<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Reset
 <LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_PrintString
 <LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Line2
 </UL>
-<BR>[Called By]<UL><LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MainLoop
+<BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MapMatrixKeyboard
 </UL>
 
-<P><STRONG><a name="[81]"></a>print_numero</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, lcd.o(.text))
+<P><STRONG><a name="[80]"></a>print_numero</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, lcd.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_PrintString
 </UL>
-<BR>[Called By]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print_tabuada
+<BR>[Called By]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print_tabuada
 </UL>
 
 <P><STRONG><a name="[76]"></a>MapMatrixKeyboard</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, matrix_keyboard.o(.text))
-<BR><BR>[Calls]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Wait1ms
+<BR><BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;update_tabuada
+<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;print_tabuada
+<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Wait1ms
 <LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_PrintString
-<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PortM_Output
-<LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PortL_Input
+<LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PortM_Output
+<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PortL_Input
 </UL>
-<BR>[Called By]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetMasterPassword
+<BR>[Called By]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetMasterPassword
 <LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MainLoop
 </UL>
 
-<P><STRONG><a name="[7c]"></a>update_tabuada</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, matrix_keyboard.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MainLoop
+<P><STRONG><a name="[82]"></a>update_tabuada</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, matrix_keyboard.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MapMatrixKeyboard
 </UL>
 <P>
 <H3>

@@ -1056,14 +1056,14 @@ ARM Macro Assembler    Page 17
   434 000001E0         ; Parâmetro de entrada: Não tem
   435 000001E0         ; Parâmetro de saída: R0 --> o valor da leitura
   436 000001E0         PortL_Input
-  437 000001E0 B407            PUSH             {R0, R1, R2}
+  437 000001E0 B402            PUSH             {R1}
   438 000001E2 4943            LDR              R1, =GPIO_PORTL_DATA_R ; Carreg
                                                             a o valor do offset
                                                              do data register
   439 000001E4 6808            LDR              R0, [R1]    ; Lê no barramento 
                                                             de dados dos pinos
   440 000001E6         
-  441 000001E6 BC07            POP              {R0 ,R1, R2}
+  441 000001E6 BC02            POP              {R1}
   442 000001E8 4770            BX               LR          ; Retorna
   443 000001EA         
   444 000001EA         ; Função PortM_Output

@@ -148,7 +148,7 @@ LCD_EndOfString
 ; Parâmetro de entrada: Não tem
 ; Parâmetro de saída: Não tem
 LCD_Reset
-	PUSH {LR}
+	PUSH {LR, R0, R3}
 	
 	MOV R3, #0x01		; Resetar: Limpar o display e levar o cursor para o home
 	BL LCD_Instruction
@@ -156,7 +156,7 @@ LCD_Reset
 	MOV R0, #10			; Delay de 10ms para executar (bem mais do que os 40us ou 1,64ms necessários)
 	BL SysTick_Wait1ms
 	
-	POP {LR}
+	POP {LR, R0, R3}
 	BX LR
 	
 
@@ -164,6 +164,7 @@ LCD_Reset
 ;Output: -
 print_tabuada
 	PUSH {LR, R2}
+	BL LCD_Reset
 	MUL R2, R0, R1
 	;ADD R2, R2, #0
 	LDR R4, =TABUADA

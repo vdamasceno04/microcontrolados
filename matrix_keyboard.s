@@ -35,6 +35,7 @@ CLOSING EQU 4
 		IMPORT PortM_Output
 		IMPORT PortL_Input
 		IMPORT LCD_PrintString
+		IMPORT LCD_Reset
 		IMPORT SysTick_Wait1ms
 		IMPORT print_tabuada
 		IMPORT print_numero
@@ -46,24 +47,23 @@ start_mem EQU 0x20000A00
 ; Parâmetro de entrada:
 ; Parâmetro de saída:
 MapMatrixKeyboard
-	PUSH {LR}
-	
+	PUSH {LR, R0}
 	; -----------------------------------------------------------
 	MOV R0, #2_11100000		; Iterando sobre a primeira coluna
 	BL PortM_Output
 	BL PortL_Input
 	
 	CMP R0, #2_1110			; Número 1 foi pressionado
-	BEQ DIGIT_1
+	BLEQ.W DIGIT_1
 	
 	CMP R0, #2_1101			; Número 4 foi pressionado
-	BEQ DIGIT_4
+	BLEQ.W DIGIT_4
 	
 	CMP R0, #2_1011			; Número 7 foi pressionado
-	BEQ.W DIGIT_7
+	BLEQ.W DIGIT_7
 	
 	CMP R0, #2_0111			; Símbolo * foi pressionado
-	BEQ.W DIGIT_AST			; Error: Branch offset out of range (BEQ.W corrige o problema)
+	BLEQ.W DIGIT_AST			; Error: Branch offset out of range (BEQ.W corrige o problema)
 	; -----------------------------------------------------------
 	
 	; -----------------------------------------------------------
@@ -72,16 +72,16 @@ MapMatrixKeyboard
 	BL PortL_Input
 	
 	CMP R0, #2_1110			; Número 2 foi pressionado
-	BEQ DIGIT_2
+	BLEQ.W DIGIT_2
 	
 	CMP R0, #2_1101			; Número 5 foi pressionado
-	BEQ DIGIT_5
+	BLEQ.W DIGIT_5
 	
 	CMP R0, #2_1011			; Número 8 foi pressionado
-	BEQ DIGIT_8
+	BLEQ.W DIGIT_8
 	
 	CMP R0, #2_0111			; Número 0 foi pressionado
-	BEQ DIGIT_0
+	BLEQ.W DIGIT_0
 	; -----------------------------------------------------------
 	
 	; -----------------------------------------------------------
@@ -90,173 +90,109 @@ MapMatrixKeyboard
 	BL PortL_Input
 	
 	CMP R0, #2_1110			; Número 3 foi pressionado
-	BEQ DIGIT_3
+	BLEQ.W DIGIT_3
 	
 	CMP R0, #2_1101			; Número 6 foi pressionado
-	BEQ DIGIT_6
+	BLEQ.W DIGIT_6
 	
 	CMP R0, #2_1011			; Número 9 foi pressionado
-	BEQ DIGIT_9
+	BLEQ.W DIGIT_9
 	
 	CMP R0, #2_0111			; Símbolo # foi pressionado
-	BEQ.W DIGIT_HASH		; Error: Branch offset out of range (BEQ.W corrige o problema)
+	BLEQ.W DIGIT_HASH		; Error: Branch offset out of range (BEQ.W corrige o problema)
 	; -----------------------------------------------------------
-	
-	POP {LR}
+		
+	POP {LR, R0}
 	BX LR
 
 ; Funções DIGIT_X
 ; Tratam a resposta do sistema para cada tecla pressionada
 ; Parâmetro de entrada: Não tem
 ; Parâmetro de saída: R6 -> O dígito inserido
-DIGIT_0
-	PUSH {LR}
-	
-	MOV R6, #0x0			; Guarda o dígito inserido
-	
-	LDR R4, =DIGIT_0_STR	; Imprime o dígito no LCD
-	BL LCD_PrintString
-	
-	BL Debouncing			; Trata o bouncing da tecla via software
-	
-	ADD R7, R7, #1			; Incrementa o contador de dígitos inseridos
-	
-	POP {LR}				; Retorna após dígito inserido ter sido guardado e impresso
-	BX LR
 
-DIGIT_1
-	PUSH {LR}
-	
-	MOV R6, #0x1			; Guarda o dígito inserido
-	
-	LDR R4, =DIGIT_1_STR	; Imprime o dígito no LCD
-	BL LCD_PrintString
-	
+process_digit
+	PUSH {LR, R0}
+	BL update_tabuada
+	BL print_tabuada
+	MOV R0, #500				; Mostra a mensagem durante 5s
+	BL SysTick_Wait1ms	; Informa que o cofre está aberto na primeira linha do LCD
+	POP {LR, R0}
+	BX LR
+DIGIT_0
+	PUSH {LR, R0}
 	BL Debouncing			; Trata o bouncing da tecla via software
+	POP {LR, R0}			; Retorna após dígito inserido ter sido guardado e impresso
+	BX LR
 	
-	ADD R7, R7, #1			; Incrementa o contador de dígitos inseridos
-	
-	POP {LR}				; Retorna após dígito inserido ter sido guardado e impresso
+DIGIT_1
+	PUSH {LR, R0}
+	BL Debouncing			; Trata o bouncing da tecla via software
+	MOV R0, #1
+	BL process_digit
+	POP {LR, R0}				; Retorna após dígito inserido ter sido guardado e impresso
 	BX LR
 
 DIGIT_2
-	PUSH {LR}
-	
-	MOV R6, #0x2			; Guarda o dígito inserido
-	
-	LDR R4, =DIGIT_2_STR	; Imprime o dígito no LCD
-	BL LCD_PrintString
-	
+	PUSH {LR, R0}
 	BL Debouncing			; Trata o bouncing da tecla via software
-	
-	ADD R7, R7, #1			; Incrementa o contador de dígitos inseridos
-	
-	POP {LR}				; Retorna após dígito inserido ter sido guardado e impresso
+	MOV R0, #2
+	BL process_digit
+	POP {LR, R0}				; Retorna após dígito inserido ter sido guardado e impresso
 	BX LR
 
 DIGIT_3
-	PUSH {LR}
-	
-	MOV R6, #0x3			; Guarda o dígito inserido
-	
-	LDR R4, =DIGIT_3_STR	; Imprime o dígito no LCD
-	BL LCD_PrintString
-	
+	PUSH {LR, R0}
 	BL Debouncing			; Trata o bouncing da tecla via software
-	
-	ADD R7, R7, #1			; Incrementa o contador de dígitos inseridos
-	
-	POP {LR}				; Retorna após dígito inserido ter sido guardado e impresso
+	MOV R0, #3
+	BL process_digit
+	POP {LR, R0}				; Retorna após dígito inserido ter sido guardado e impresso
 	BX LR
 
 DIGIT_4
-	PUSH {LR}
-	
-	MOV R6, #0x4			; Guarda o dígito inserido
-	
-	LDR R4, =DIGIT_4_STR	; Imprime o dígito no LCD
-	BL LCD_PrintString
-	
+	PUSH {LR, R0}
 	BL Debouncing			; Trata o bouncing da tecla via software
-	
-	ADD R7, R7, #1			; Incrementa o contador de dígitos inseridos
-	
-	POP {LR}				; Retorna após dígito inserido ter sido guardado e impresso
+	MOV R0, #4
+	BL process_digit
+	POP {LR, R0}
 	BX LR
 
 DIGIT_5
-	PUSH {LR}
-	
-	MOV R6, #0x5			; Guarda o dígito inserido
-	
-	LDR R4, =DIGIT_5_STR	; Imprime o dígito no LCD
-	BL LCD_PrintString
-	
+	PUSH {LR, R0}
 	BL Debouncing			; Trata o bouncing da tecla via software
-	
-	ADD R7, R7, #1			; Incrementa o contador de dígitos inseridos
-	
-	POP {LR}				; Retorna após dígito inserido ter sido guardado e impresso
+	MOV R0, #5
+	BL process_digit
+	POP {LR, R0}
 	BX LR
 
 DIGIT_6
-	PUSH {LR}
-	
-	MOV R6, #0x6			; Guarda o dígito inserido
-	
-	LDR R4, =DIGIT_6_STR	; Imprime o dígito no LCD
-	BL LCD_PrintString
-	
+	PUSH {LR, R0}
 	BL Debouncing			; Trata o bouncing da tecla via software
-	
-	ADD R7, R7, #1			; Incrementa o contador de dígitos inseridos
-	
-	POP {LR}				; Retorna após dígito inserido ter sido guardado e impresso
+	MOV R0, #6
+	BL process_digit
+	POP {LR, R0}			; Retorna após dígito inserido ter sido guardado e impresso
 	BX LR
 
 DIGIT_7
-	PUSH {LR}
-	
-	MOV R6, #0x7			; Guarda o dígito inserido
-	
-	LDR R4, =DIGIT_7_STR	; Imprime o dígito no LCD
-	BL LCD_PrintString
-	
+	PUSH {LR, R0}
 	BL Debouncing			; Trata o bouncing da tecla via software
-	
-	ADD R7, R7, #1			; Incrementa o contador de dígitos inseridos
-	
-	POP {LR}				; Retorna após dígito inserido ter sido guardado e impresso
+	MOV R0, #7
+	BL process_digit
+	POP {LR, R0}
 	BX LR
-
 DIGIT_8
-	PUSH {LR}
-	
-	MOV R6, #0x8			; Guarda o dígito inserido
-	
-	LDR R4, =DIGIT_8_STR	; Imprime o dígito no LCD
-	BL LCD_PrintString
-	
+	PUSH {LR, R0}
 	BL Debouncing			; Trata o bouncing da tecla via software
-	
-	ADD R7, R7, #1			; Incrementa o contador de dígitos inseridos
-	
-	POP {LR}				; Retorna após dígito inserido ter sido guardado e impresso
+	MOV R0, #8
+	BL process_digit
+	POP {LR, R0}
 	BX LR
 
 DIGIT_9
-	PUSH {LR}
-	
-	MOV R6, #0x9			; Guarda o dígito inserido
-	
-	LDR R4, =DIGIT_9_STR	; Imprime o dígito no LCD
-	BL LCD_PrintString
-	
+	PUSH {LR, R0}
 	BL Debouncing			; Trata o bouncing da tecla via software
-	
-	ADD R7, R7, #1			; Incrementa o contador de dígitos inseridos
-	
-	POP {LR}				; Retorna após dígito inserido ter sido guardado e impresso
+	MOV R0, #9
+	BL process_digit
+	POP {LR, R0}
 	BX LR
 
 DIGIT_AST

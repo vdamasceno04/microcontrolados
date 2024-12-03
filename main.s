@@ -118,7 +118,6 @@ SetMasterPassword
 ; Parâmetro de entrada: R5 -> Estado atual do cofre
 ; Parâmetro de saída: Não tem
 MainLoop
-
 	CMP R5, #CLOSED			; Verifica se o cofre já está fechado
 	BEQ ClosedFunction
 	
@@ -316,19 +315,17 @@ GetPassword
 	BL zerar_memoria
 	
 	BL LCD_Reset				; Limpa o display e coloca o cursor em home	
-	MOV R0, #2			; simula clique no 2
-	BL update_tabuada
-	BL print_tabuada
-	MOV R0, #500				; Mostra a mensagem durante 5s
-	BL SysTick_Wait1ms	; Informa que o cofre está aberto na primeira linha do LCD
+	LDR R4, =TABUADA_INIT1
+	BL LCD_PrintString
+	BL LCD_Line2
+	LDR R4, =TABUADA_INIT2
+	BL LCD_PrintString
+	;MOV R0, #2			; simula clique no 2
+	;BL update_tabuada
+	;BL print_tabuada
+	;MOV R0, #500				; Mostra a mensagem durante 5s
+	;BL SysTick_Wait1ms	; Informa que o cofre está aberto na primeira linha do LCD
 	
-	BL LCD_Reset				; Limpa o display e coloca o cursor em home		
-	MOV R0, #2			; simula clique no 2
-	BL update_tabuada
-	BL print_tabuada
-	MOV R0, #500				; Mostra a mensagem durante 5s
-	BL SysTick_Wait1ms	; Informa que o cofre está aberto na primeira linha do LCD
-		
 	MOV R5, #SET_PASSWORD		; Coloca o cofre em estado de cadastrar a nova senha
 	
 	B MainLoop					; Retoma o loop principal no estado de cadastrar a nova senha
@@ -450,6 +447,8 @@ zerar_fim
 	
 
 ; Definição dos textos do LCD com 16 caracteres cada
+TABUADA_INIT1 DCB "Tabuada do nxm", 0
+TABUADA_INIT2 DCB "nxm=resultado", 0
 OPENING_STR	DCB "Abrindo         ", 0
 OPEN_STR	DCB "w",  0
 CLOSING_STR	DCB "Fechando        ", 0
